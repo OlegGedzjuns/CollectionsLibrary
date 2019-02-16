@@ -7,12 +7,11 @@ using namespace std;
 int main()
 {
 	LinkedList_class<int>* myList = new LinkedList_class<int>;
-	myList->PushBack(myList->PushBack(3) + 1);
-	myList->PushBack(2);
-	for (auto it = myList; it != nullptr; it= it->Next())
+	for (auto it = myList->Head(); it != nullptr; it = it->Next())
 	{
 		cout << it->Data() << " ";
 	}
+	cout << endl << myList->GetSize();
 	cin.get();
 	return 0;
 }
