@@ -22,6 +22,8 @@ int main()
 	secondList->CopyTo(myList);
 	secondList->PopBack();
 
+	myList->PushAt(5, secondList);
+
 	for (auto it = myList->Head(); it != nullptr; it = it->Next())
 	{
 		cout << it->Data() << " ";

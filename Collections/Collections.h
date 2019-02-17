@@ -92,6 +92,18 @@ template<class T>
 				}
 			}
 		}
+		ListElement_class<T>* PushFront(ListElement_class<T>* &item)
+		{
+			return PushFront(item->Data());
+		}
+		void PushFront(LinkedList_class<T>* &source)
+		{
+			int i = 0;
+			for (auto it = source->Head(); it != nullptr; it = it->Next(), i++)
+			{
+				PushAt(i, it->Data());
+			}
+		}
 		ListElement_class<T>* PushAt(int index, T data)
 		{
 			if (index <= 0)
@@ -122,6 +134,17 @@ template<class T>
 					_lastPos = 0;
 					return PushAt(index, data);
 				}
+			}
+		}
+		ListElement_class<T>* PushAt(int index, ListElement_class<T>* &item)
+		{
+			return PushAt(index, item->Data());
+		}
+		void PushAt(int index, LinkedList_class<T>* &source)
+		{
+			for (auto it = source->Head(); it != nullptr; it = it->Next(), index++)
+			{
+				PushAt(index, it->Data());
 			}
 		}
 		bool PopBack()
