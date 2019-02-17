@@ -6,10 +6,10 @@ template <class T>
 	{
 	private:
 		T _data;
-		ListElement_class* _next = nullptr;
+		ListElement_class<T>* _next = nullptr;
 	public:
 		T& Data() { return _data; }
-		ListElement_class*& Next() { return _next; }
+		ListElement_class<T>*& Next() { return _next; }
 
 		ListElement_class(T data)
 		{
@@ -26,7 +26,6 @@ template<class T>
 	class LinkedList_class
 	{
 	private:
-
 		ListElement_class<T>* _lastPtr = nullptr;
 		int _lastPos = -1;
 		ListElement_class<T>* _tail = nullptr;
@@ -67,23 +66,27 @@ template<class T>
 				item->Next() = Head();
 				Head() = item;
 				_size++;
+				if (_lastPos >= 0)
+				{
+					_lastPos++;
+				}
 			}
 		}
-		ListElement_class<T>* PushAt(int pos, T data)
+		ListElement_class<T>* PushAt(int index, T data)
 		{
-			if (pos <= 0)
+			if (index <= 0)
 			{
 				PushFront(data);
 			}
-			else if (pos >= _size)
+			else if (index >= _size)
 			{
 				PushBack(data);
 			}
 			else
 			{
-				if (_lastPos <= pos - 1 && _lastPos != -1)
+				if (_lastPos <= index - 1 && _lastPos != -1)
 				{
-					while (_lastPos < pos - 1)
+					while (_lastPos < index - 1)
 					{
 						_lastPtr = _lastPtr->Next();
 						_lastPos++;
@@ -97,8 +100,92 @@ template<class T>
 				{
 					_lastPtr = Head();
 					_lastPos = 0;
-					return PushAt(pos, data);
+					return PushAt(index, data);
 				}
+			}
+		}
+		bool PopBack()
+		{
+			if (_size > 1)
+			{
+				while (_lastPos < _size - 2)
+				{
+					if (_lastPos < 0)
+					{
+						_lastPos = 0;
+						_lastPtr = Head();
+					}
+					_lastPtr = _lastPtr->Next();
+					_lastPos++;
+				}
+				delete _lastPtr->Next();
+				_lastPtr->Next() = nullptr;
+				_size--;
+				return true;
+			}
+			else if (_size == 1)
+			{
+				return PopFront();
+			} 
+			else
+			{
+				return false;
+			}
+		}
+		bool PopFront()
+		{
+			if (_size > 0)
+			{
+				ListElement_class<T>* item = Head();
+				Head() = Head()->Next();
+				_size--;
+				_lastPos--;
+				delete item;
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		bool PopAt(int index)
+		{
+			if (_size > 0)
+			{
+				if (index >= _size - 1)
+				{
+					return PopBack();
+				}
+				else if (index <= 0)
+				{
+					return PopFront();
+				}
+				else
+				{
+					if (_lastPos <= index - 1 && _lastPos >= 0)
+					{
+						while (_lastPos < index - 1)
+						{
+							_lastPtr = _lastPtr->Next();
+							_lastPos++;
+						}
+						ListElement_class<T>* item = _lastPtr->Next();
+						_lastPtr->Next() = _lastPtr->Next()->Next();
+						delete item;
+						_size--;
+						return true;
+					}
+					else
+					{
+						_lastPos = 0;
+						_lastPtr = Head();
+						return PopAt(index);
+					}
+				}
+			}
+			else
+			{
+				return false;
 			}
 		}
 		int GetSize()
