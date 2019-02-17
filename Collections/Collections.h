@@ -63,6 +63,17 @@ template<class T>
 			}
 			
 		}
+		ListElement_class<T>* PushBack(ListElement_class<T>* &item)
+		{
+			return PushBack(item->Data());
+		}
+		void PushBack(LinkedList_class<T>* &source)
+		{
+			for (auto it = source->Head(); it != nullptr; it = it->Next())
+			{
+				PushBack(it->Data());
+			}
+		}
 		ListElement_class<T>* PushFront(T data)
 		{
 			if (_size == 0)
@@ -79,6 +90,18 @@ template<class T>
 				{
 					_lastPos++;
 				}
+			}
+		}
+		ListElement_class<T>* PushFront(ListElement_class<T>* &item)
+		{
+			return PushFront(item->Data());
+		}
+		void PushFront(LinkedList_class<T>* &source)
+		{
+			int i = 0;
+			for (auto it = source->Head(); it != nullptr; it = it->Next(), i++)
+			{
+				PushAt(i, it->Data());
 			}
 		}
 		ListElement_class<T>* PushAt(int index, T data)
@@ -111,6 +134,17 @@ template<class T>
 					_lastPos = 0;
 					return PushAt(index, data);
 				}
+			}
+		}
+		ListElement_class<T>* PushAt(int index, ListElement_class<T>* &item)
+		{
+			return PushAt(index, item->Data());
+		}
+		void PushAt(int index, LinkedList_class<T>* &source)
+		{
+			for (auto it = source->Head(); it != nullptr; it = it->Next(), index++)
+			{
+				PushAt(index, it->Data());
 			}
 		}
 		bool PopBack()
@@ -208,6 +242,7 @@ template<class T>
 		}
 		void CopyFrom(LinkedList_class<T>*& source)
 		{
+			Clear();
 			for (auto it = source->Head(); it != nullptr; it = it->Next())
 			{
 				PushBack(it->Data());
@@ -217,6 +252,7 @@ template<class T>
 		{
 			if (_size <= 0) return false;
 			while (PopFront());
+			_size = 0;
 			_lastPos = -1;
 			_lastPtr = nullptr;
 			return true;
