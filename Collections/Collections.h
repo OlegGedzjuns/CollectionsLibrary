@@ -4,13 +4,14 @@ namespace LinkedList
 template <class T>
 	class ListElement_class
 	{
+// VARIABLES HERE
 	private:
 		T _data;
 		ListElement_class<T>* _next = nullptr;
 	public:
 		T& Data() { return _data; }
 		ListElement_class<T>*& Next() { return _next; }
-
+// CONSTRUCTORS HERE
 		ListElement_class(T data)
 		{
 			Data() = data;
@@ -20,11 +21,13 @@ template <class T>
 			Data() = data;
 			Next() = next;
 		}
+// METHODES HERE
 	};
 
 template<class T>
 	class LinkedList_class
 	{
+// VARIABLES HERE:
 	private:
 		ListElement_class<T>* _lastPtr = nullptr;
 		int _lastPos = -1;
@@ -35,18 +38,17 @@ template<class T>
 		ListElement_class<T>*& Tail() { return _tail; }
 		ListElement_class<T>*& Head() { return _head; }
 
-		LinkedList_class()
-		{
-
-		}
+// CONSTRUCTORS HERE
+		LinkedList_class() { }
 		LinkedList_class(LinkedList_class<T>* &source)
 		{
 			CopyFrom(source);
 		}
 
+// METHODES HERE
 		ListElement_class<T>* PushBack(T data)
 		{
-			if (_size == 0)
+			if (_size == 0)	// List is empty
 			{
 				ListElement_class<T>* item = new ListElement_class<T>(data);
 				_size++;
@@ -57,7 +59,7 @@ template<class T>
 			else
 			{
 				Tail()->Next() = new ListElement_class<T>(data);
-				Tail() = Tail()->Next();
+				Tail() = Tail()->Next();	
 				_size++;
 				return Tail();
 			}
@@ -65,18 +67,18 @@ template<class T>
 		}
 		ListElement_class<T>* PushBack(ListElement_class<T>* &item)
 		{
-			return PushBack(item->Data());
+			return PushBack(item->Data());	//we push copy of data
 		}
 		void PushBack(LinkedList_class<T>* &source)
 		{
-			for (auto it = source->Head(); it != nullptr; it = it->Next())
+			for (auto it = source->Head(); it != nullptr; it = it->Next())	//TODO: change to iterator
 			{
 				PushBack(it->Data());
 			}
 		}
 		ListElement_class<T>* PushFront(T data)
 		{
-			if (_size == 0)
+			if (_size == 0) //list is empty, we can use PushBack methode
 			{
 				return PushBack(data);
 			}
@@ -86,7 +88,7 @@ template<class T>
 				item->Next() = Head();
 				Head() = item;
 				_size++;
-				if (_lastPos >= 0)
+				if (_lastPos >= 0)	//TODO: change to iterator
 				{
 					_lastPos++;
 				}
@@ -94,12 +96,12 @@ template<class T>
 		}
 		ListElement_class<T>* PushFront(ListElement_class<T>* &item)
 		{
-			return PushFront(item->Data());
+			return PushFront(item->Data());	//we push copy of data
 		}
 		void PushFront(LinkedList_class<T>* &source)
 		{
 			int i = 0;
-			for (auto it = source->Head(); it != nullptr; it = it->Next(), i++)
+			for (auto it = source->Head(); it != nullptr; it = it->Next(), i++)	//TODO: change to iterator
 			{
 				PushAt(i, it->Data());
 			}
@@ -116,9 +118,9 @@ template<class T>
 			}
 			else
 			{
-				if (_lastPos <= index - 1 && _lastPos != -1)
+				if (_lastPos <= index - 1 && _lastPos != -1)	// we can start finding our pos not from the begining
 				{
-					while (_lastPos < index - 1)
+					while (_lastPos < index - 1)	// find our position
 					{
 						_lastPtr = _lastPtr->Next();
 						_lastPos++;
@@ -130,7 +132,7 @@ template<class T>
 				}
 				else
 				{
-					_lastPtr = Head();
+					_lastPtr = Head();	// if we use _lastPtr first time, we need to initialise it
 					_lastPos = 0;
 					return PushAt(index, data);
 				}
@@ -138,11 +140,11 @@ template<class T>
 		}
 		ListElement_class<T>* PushAt(int index, ListElement_class<T>* &item)
 		{
-			return PushAt(index, item->Data());
+			return PushAt(index, item->Data());	//we push copy of data
 		}
 		void PushAt(int index, LinkedList_class<T>* &source)
 		{
-			for (auto it = source->Head(); it != nullptr; it = it->Next(), index++)
+			for (auto it = source->Head(); it != nullptr; it = it->Next(), index++)	//TODO: change to iterator
 			{
 				PushAt(index, it->Data());
 			}
@@ -151,7 +153,7 @@ template<class T>
 		{
 			if (_size > 1)
 			{
-				while (_lastPos < _size - 2)
+				while (_lastPos < _size - 2)	//need to find element before element to delete
 				{
 					if (_lastPos < 0)
 					{
@@ -168,27 +170,27 @@ template<class T>
 			}
 			else if (_size == 1)
 			{
-				return PopFront();
+				return PopFront();	// we have only Head, can't use PopBack algorithm
 			} 
 			else
 			{
-				return false;
+				return false;	// nothing to delete
 			}
 		}
 		bool PopFront()
 		{
 			if (_size > 0)
 			{
-				ListElement_class<T>* item = Head();
-				Head() = Head()->Next();
+				ListElement_class<T>* item = Head(); // pointer to head element
+				Head() = Head()->Next();	// move head pointer
 				_size--;
-				_lastPos--;
+				_lastPos--;	// if it was initialised position changed
 				delete item;
 				return true;
 			}
 			else
 			{
-				return false;
+				return false;	// nothing to delete
 			}
 		}
 		bool PopAt(int index)
@@ -207,13 +209,13 @@ template<class T>
 				{
 					if (_lastPos <= index - 1 && _lastPos >= 0)
 					{
-						while (_lastPos < index - 1)
+						while (_lastPos < index - 1)	// moving to position before deleting
 						{
 							_lastPtr = _lastPtr->Next();
 							_lastPos++;
 						}
-						ListElement_class<T>* item = _lastPtr->Next();
-						_lastPtr->Next() = _lastPtr->Next()->Next();
+						ListElement_class<T>* item = _lastPtr->Next();	// element to delete
+						_lastPtr->Next() = _lastPtr->Next()->Next();	// change next pointer
 						delete item;
 						_size--;
 						return true;
@@ -221,7 +223,7 @@ template<class T>
 					else
 					{
 						_lastPos = 0;
-						_lastPtr = Head();
+						_lastPtr = Head();	// if we use _lastPtr first time, we need to initialise it
 						return PopAt(index);
 					}
 				}
@@ -233,6 +235,7 @@ template<class T>
 		}
 		void CopyTo(LinkedList_class<T>*& dest)
 		{
+			//	TODO: change to iterator
 			for (_lastPos = 0, _lastPtr = Head(); _lastPos < _size; _lastPos++, _lastPtr = _lastPtr->Next())
 			{
 				dest->PushBack(_lastPtr->Data());
@@ -242,8 +245,9 @@ template<class T>
 		}
 		void CopyFrom(LinkedList_class<T>*& source)
 		{
-			Clear();
-			for (auto it = source->Head(); it != nullptr; it = it->Next())
+			// creates list using data from another list (using in copy constructor)
+			Clear();	// we ned to delete all data before filling
+			for (auto it = source->Head(); it != nullptr; it = it->Next())	// TODO: change to iterator
 			{
 				PushBack(it->Data());
 			}
@@ -251,7 +255,7 @@ template<class T>
 		bool Clear()
 		{
 			if (_size <= 0) return false;
-			while (PopFront());
+			while (PopFront());	// PopFront will return false when no data
 			_size = 0;
 			_lastPos = -1;
 			_lastPtr = nullptr;
