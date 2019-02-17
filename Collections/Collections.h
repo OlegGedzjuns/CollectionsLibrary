@@ -63,6 +63,17 @@ template<class T>
 			}
 			
 		}
+		ListElement_class<T>* PushBack(ListElement_class<T>* &item)
+		{
+			return PushBack(item->Data());
+		}
+		void PushBack(LinkedList_class<T>* &source)
+		{
+			for (auto it = source->Head(); it != nullptr; it = it->Next())
+			{
+				PushBack(it->Data());
+			}
+		}
 		ListElement_class<T>* PushFront(T data)
 		{
 			if (_size == 0)
@@ -208,6 +219,7 @@ template<class T>
 		}
 		void CopyFrom(LinkedList_class<T>*& source)
 		{
+			Clear();
 			for (auto it = source->Head(); it != nullptr; it = it->Next())
 			{
 				PushBack(it->Data());
@@ -217,6 +229,7 @@ template<class T>
 		{
 			if (_size <= 0) return false;
 			while (PopFront());
+			_size = 0;
 			_lastPos = -1;
 			_lastPtr = nullptr;
 			return true;
