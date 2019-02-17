@@ -35,6 +35,15 @@ template<class T>
 		ListElement_class<T>*& Tail() { return _tail; }
 		ListElement_class<T>*& Head() { return _head; }
 
+		LinkedList_class()
+		{
+
+		}
+		LinkedList_class(LinkedList_class<T>* &source)
+		{
+			CopyFrom(source);
+		}
+
 		ListElement_class<T>* PushBack(T data)
 		{
 			if (_size == 0)
@@ -187,6 +196,30 @@ template<class T>
 			{
 				return false;
 			}
+		}
+		void CopyTo(LinkedList_class<T>*& dest)
+		{
+			for (_lastPos = 0, _lastPtr = Head(); _lastPos < _size; _lastPos++, _lastPtr = _lastPtr->Next())
+			{
+				dest->PushBack(_lastPtr->Data());
+			}
+			_lastPos = -1;
+			_lastPtr = nullptr;
+		}
+		void CopyFrom(LinkedList_class<T>*& source)
+		{
+			for (auto it = source->Head(); it != nullptr; it = it->Next())
+			{
+				PushBack(it->Data());
+			}
+		}
+		bool Clear()
+		{
+			if (_size <= 0) return false;
+			while (PopFront());
+			_lastPos = -1;
+			_lastPtr = nullptr;
+			return true;
 		}
 		int GetSize()
 		{
