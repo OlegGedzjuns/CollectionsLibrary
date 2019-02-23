@@ -1,8 +1,9 @@
 #include "Collections.h"
 
-using namespace LinkedList;
+using namespace SortedList;
 
 #if _DEBUG
+	#include <string>
 	#include <iostream>
 	using namespace std;
 #endif
@@ -10,31 +11,17 @@ using namespace LinkedList;
 int main()
 {
 #if _DEBUG
-	LinkedList_class<int>* myList = new LinkedList_class<int>();
-	for (int i = 0; i < 10; i++)
-	{
-		myList->PushBack(i);
-	}
-
-	LinkedList_class<int>* secondList = new LinkedList_class<int>(myList);
-	myList->Clear();
-	secondList->PushBack(100);
-	secondList->CopyTo(myList);
-	secondList->PopBack();
-
-	myList->PushAt(5, secondList);
-
+	SortedList_class<string>* myList = new SortedList_class<string>();
+	myList->Add("B");
+	myList->Add("D");
+	myList->Add("A");
+	myList->Add("C");
+	myList->Add("A");
 	for (auto it = myList->Head(); it != nullptr; it = it->Next())
 	{
 		cout << it->Data() << " ";
 	}
 	cout << endl << myList->GetSize() << endl;
-
-	for (auto it = secondList->Head(); it != nullptr; it = it->Next())
-	{
-		cout << it->Data() << " ";
-	}
-	cout << endl << secondList->GetSize() << endl;
 
 	cin.get();
 #endif

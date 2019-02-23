@@ -1,4 +1,5 @@
 #pragma once
+
 namespace LinkedList
 {
 template <class T>
@@ -24,7 +25,7 @@ template <class T>
 // METHODES HERE
 	};
 
-template<class T>
+template <class T>
 	class LinkedList_class
 	{
 // VARIABLES HERE:
@@ -63,7 +64,6 @@ template<class T>
 				_size++;
 				return Tail();
 			}
-			
 		}
 		ListElement_class<T>* PushBack(ListElement_class<T>* &item)
 		{
@@ -92,6 +92,7 @@ template<class T>
 				{
 					_lastPos++;
 				}
+				return Head();
 			}
 		}
 		ListElement_class<T>* PushFront(ListElement_class<T>* &item)
@@ -260,6 +261,147 @@ template<class T>
 			_lastPos = -1;
 			_lastPtr = nullptr;
 			return true;
+		}
+		int GetSize()
+		{
+			return _size;
+		}
+	};
+}
+
+namespace SortedList
+{
+template <class T>
+	class SortedListElement_class
+	{
+		// VARIABLES HERE
+	private:
+		T _data;
+		SortedListElement_class<T>* _next = nullptr;
+	public:
+		T& Data() { return _data; }
+		SortedListElement_class<T>*& Next() { return _next; }
+		// CONSTRUCTORS HERE
+		SortedListElement_class(T data)
+		{
+
+			Data() = data;
+		}
+		SortedListElement_class(T data, SortedListElement_class* next)
+		{
+			Data() = data;
+			Next() = next;
+		}
+		// METHODES HERE
+	};
+
+template <class T>
+	class SortedList_class
+	{
+// VARIABLES HERE:
+	private:
+		SortedListElement_class<T>* _lastPtr = nullptr;
+		int _lastPos = -1;
+		SortedListElement_class<T>* _tail = nullptr;
+		SortedListElement_class<T>* _head = nullptr;
+		int _size = 0;
+	public:
+		SortedListElement_class<T>*& Tail() { return _tail; }
+		SortedListElement_class<T>*& Head() { return _head; }
+// CONSTRUCTORS HERE
+// METHODES HERE
+	private:
+		int _PushBack(T data)
+		{
+			Tail()->Next() = new SortedListElement_class<T>(data);
+			Tail() = Tail()->Next();
+			_size++;
+			return _size - 1;
+		}
+		int _PushFront(T data)
+		{
+			SortedListElement_class<T>* item = new SortedListElement_class<T>(data);
+			item->Next() = Head();
+			Head() = item;
+			_size++;
+			if (_lastPos >= 0)	//TODO: change to iterator
+			{
+				_lastPos++;
+			}
+			return 0;
+		}
+		int _PushAt(int index, T data)
+		{
+			if (index <= 0)
+			{
+				return _PushFront(data);
+			}
+			else if (index >= _size)
+			{
+				return _PushBack(data);
+			}
+			else
+			{
+				if (_lastPos <= index - 1 && _lastPos != -1)	// we can start finding our pos not from the begining
+				{
+					while (_lastPos < index - 1)	// find our position
+					{
+						_lastPtr = _lastPtr->Next();
+						_lastPos++;
+					}
+					SortedListElement_class<T>* item = new SortedListElement_class<T>(data, _lastPtr->Next());
+					_lastPtr->Next() = item;
+					_size++;
+					return index;
+				}
+				else
+				{
+					_lastPtr = Head();	// if we use _lastPtr first time, we need to initialise it
+					_lastPos = 0;
+					return _PushAt(index, data);
+				}
+			}
+		}
+	public:
+		int Add(T data)
+		{
+			if (_size <= 0)
+			{
+				SortedListElement_class<T>* item = new SortedListElement_class<T>(data);
+				_size++;
+				Head() = item;
+				Tail() = item;
+				_lastPos = 0;
+				_lastPtr = Head();
+				return 0;
+			}
+			int i = 0;
+			for (auto it = Head(); it != nullptr; it = it->Next(), i++)
+			{
+				if (data <= it->Data())
+				{
+					if (data == it->Data())
+					{
+						return -1;
+					}
+					else
+					{
+						break;
+					}
+				}
+			}
+			return _PushAt(i, data);
+		}
+		bool Find(T data)
+		{
+			for (auto it = Head(); it != nullptr; it = it->Next())
+			{
+				if (it->Data() == data)
+				{
+					return true;
+				}
+			}
+			return false;
 		}
 		int GetSize()
 		{
