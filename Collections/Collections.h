@@ -397,6 +397,31 @@ template <class T>
 			}
 			return _PushAt(i, data);
 		}
+		bool PopFront()
+		{
+			if (_size > 0)
+			{
+				SortedListElement_class<T>* item = Head(); // pointer to head element
+				Head() = Head()->Next();	// move head pointer
+				_size--;
+				_lastPos--;	// if it was initialised position changed
+				delete item;
+				return true;
+			}
+			else
+			{
+				return false;	// nothing to delete
+			}
+		}
+		bool Clear()
+		{
+			if (_size <= 0) return false;
+			while (PopFront());	// PopFront will return false when no data
+			_size = 0;
+			_lastPos = -1;
+			_lastPtr = nullptr;
+			return true;
+		}
 		bool Find(T data)
 		{
 			for (auto it = Head(); it != nullptr; it = it->Next())
