@@ -1,5 +1,10 @@
 #pragma once
 
+///////////////////////////////////////////////////////
+// Open source collections templates library         //
+// https://github.com/SecyrBb/CollectionsLibrary.git //
+///////////////////////////////////////////////////////
+
 namespace LinkedList
 {
 template <class T>
